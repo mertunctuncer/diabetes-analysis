@@ -10,9 +10,9 @@ import java.util.stream.Stream;
 public class CSVReader {
 
     private final Path path;
-    private String[] columnNames;
-    private int columnCount;
-    private int rowCount;
+    private final String[] columnNames;
+    private final int columnCount;
+    private final int rowCount;
     private float[][] data;
 
     public CSVReader(Path path) {
