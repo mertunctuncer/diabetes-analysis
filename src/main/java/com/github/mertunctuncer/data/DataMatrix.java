@@ -1,13 +1,13 @@
-package com.github.mertunctuncer.util;
+package com.github.mertunctuncer.data;
 
-public class CSVData {
+public class DataMatrix {
 
     private final String[] columns;
     private final float[][] data;
     private final float[] min;
     private final float[] max;
 
-    public CSVData(String[] columns, float[][] data) {
+    public DataMatrix(String[] columns, float[][] data) {
         this.columns = columns;
         this.data = data;
         this.min = new float[columns.length];
@@ -33,19 +33,23 @@ public class CSVData {
 
     }
 
+    public float get(int row, int column) {
+        return data[row][column];
+    }
+
     public String[] getColumns() {
         return columns;
     }
 
-    public float[][] getData() {
+    public float[][] getArray() {
         return data;
     }
 
-    public float[] getMax() {
+    public float[] getMaxValues() {
         return max;
     }
 
-    public float[] getMin() {
+    public float[] getMinValues() {
         return min;
     }
 

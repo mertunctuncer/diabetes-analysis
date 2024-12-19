@@ -1,4 +1,6 @@
-package com.github.mertunctuncer.util;
+package com.github.mertunctuncer.file;
+
+import com.github.mertunctuncer.data.DataMatrix;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +15,6 @@ public class CSVReader {
     private final String[] columnNames;
     private final int columnCount;
     private final int rowCount;
-    private float[][] data;
 
     public CSVReader(Path path) {
         this.path = path;
@@ -27,7 +28,8 @@ public class CSVReader {
     }
 
 
-    public void readFile() throws IOException {
+    public DataMatrix readFile() throws IOException {
+        float[][] data;
         try(BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             String line;
 
@@ -43,6 +45,8 @@ public class CSVReader {
                 index++;
             }
         }
+
+        return new DataMatrix(columnNames, data);
     }
 
     private String[] readColumnNames() throws IOException {
@@ -60,21 +64,5 @@ public class CSVReader {
 
     private int findColumnCount() {
         return columnNames.length;
-    }
-
-    public String[] getColumnNames() {
-        return columnNames;
-    }
-
-    public int getColumnCount() {
-        return columnCount;
-    }
-
-    public int getRowCount() {
-        return rowCount;
-    }
-
-    public float[][] getData() {
-        return data;
     }
 }
