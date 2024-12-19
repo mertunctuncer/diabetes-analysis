@@ -1,32 +1,47 @@
 package com.github.mertunctuncer.classification;
 
 import com.aparapi.Kernel;
+
 import java.util.Set;
 
 import com.aparapi.Range;
-import com.github.mertunctuncer.util.CSVData;
+import com.github.mertunctuncer.data.DataMatrix;
+import com.github.mertunctuncer.util.Distance;
 
 public class KNearestNeighbour {
 
-    public void findClosest(CSVData data, float[] search, Set<Integer> ignoredIndexes) {
-        float[][] distSquared = new float[data.getRowSize()][data.getColumnSize()];
-        float[][] dataArray = data.getData();
+    public DataMatrix findClosest(DataMatrix data, float[] search, int k, Set<Integer> ignoredIndexes) {
+
+        float[][] dataArray = data.getArray();
+        float[] distances = new float[dataArray.length];
 
         Kernel kernel = new Kernel() {
             @Override
             public void run() {
                 int i = getGlobalId();
-                for(int j = 0; j < data.getColumnSize(); j++) {
-                    if(ignoredIndexes.contains(j)) continue;
-                    distSquared[i][j] = pow(dataArray[i][j] - search[j], 2);
-                }
+                distances[i] = Distance.getEuclideanDistance(dataArray[i], search);
             }
         };
 
-        Range range = Range.create(distSquared.length);
+        Range range = Range.create(data.getRowSize());
         kernel.execute(range);
 
+        int[] closestIndexes = closestK(distances, k);
+
+        float[][] closestData = new float[closestIndexes.length][data.getColumnSize()];
+
+        for(int i = 0; i < closestIndexes.length; i++) {
+            closestData[i] = dataArray[closestIndexes[i]];
+        }
+
+        return new DataMatrix(data.getColumns(), closestData);
+    }
+
+    private int[] closestK(float[] distances, int k) {
+        // return indexes of the smallest k in distances array
 
 
     }
+
+
 }
