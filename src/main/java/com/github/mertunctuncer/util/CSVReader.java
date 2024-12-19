@@ -33,12 +33,14 @@ public class CSVReader {
 
             data = new float[rowCount - 1][columnCount];
 
-            int index = 1;
+            int index = 0;
+            reader.readLine();
             while((line = reader.readLine()) != null) {
                 String[] split = line.split(",");
                 for(int i = 0; i < columnNames.length; i++) {
                     data[index][i] = Float.parseFloat(split[i]);
                 }
+                index++;
             }
         }
     }
